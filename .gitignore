@@ -8,6 +8,8 @@ env/
 # Django
 db.sqlite3
 db.sqlite3-journal
+*.sqlite3
+*.sqlite3-*
 media/
 staticfiles/
 
@@ -15,6 +17,10 @@ staticfiles/
 .env
 .env.*
 !.env.example
+secrets/
+*.key
+*.pem
+*.crt
 
 # Test and tooling artifacts
 .pytest_cache/
