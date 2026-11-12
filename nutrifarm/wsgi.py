@@ -1,16 +1,18 @@
-"""WSGI config for the NutriFarm AI PythonAnywhere deployment."""
 
 import os
 import sys
-from pathlib import Path
 
-PROJECT_DIR = Path(__file__).resolve().parent.parent
-if str(PROJECT_DIR) not in sys.path:
-    sys.path.insert(0, str(PROJECT_DIR))
+# Project directory
+path = '/home/alokkumar23/NutriFarm.AI'
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'nutrifarm.settings')
-# This module is used by the hosted WSGI app. Local development uses manage.py.
+if path not in sys.path:
+    sys.path.insert(0, path)
+
+# Environment variables MUST be set before Django initializes
+os.environ['DJANGO_SETTINGS_MODULE'] = 'nutrifarm.settings'
+os.environ['DJANGO_SECRET_KEY'] = 'ni0gasw6-CRaae2-fpfjWC8CIPZ8l9VpjK6FZLgjw6yXi-5kG3t9SJZpEvLtxQGK7pA'
 os.environ['DJANGO_DEBUG'] = 'False'
+os.environ['DJANGO_ALLOWED_HOSTS'] = 'alokkumar23.pythonanywhere.com'
 
 from django.core.wsgi import get_wsgi_application
 
