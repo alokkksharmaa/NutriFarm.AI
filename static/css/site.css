@@ -62,6 +62,8 @@ a { color: inherit; }
 .section-heading .eyebrow { margin-bottom: .85rem; }
 .section-heading h2, .process-title, .benefits-panel h2, .closing-cta h2 { color: var(--forest-deep); font-size: clamp(2rem, 3.5vw, 2.8rem); font-weight: 700; letter-spacing: -.055em; line-height: 1.18; }
 .section-heading > p:last-child { margin: 1rem 0 0; color: var(--muted); }
+.content-page-heading { max-width: 760px; margin: 0 0 1rem; color: var(--forest-deep); font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 720; letter-spacing: -.06em; line-height: 1.12; }
+.content-page-lead { max-width: 700px; margin-bottom: 1.2rem; color: var(--muted); font-size: 1.08rem; line-height: 1.75; }
 .feature-grid { max-width: 1100px; margin: 0 auto; }
 .feature-card { padding: 1.75rem 1.65rem; border: 1px solid var(--line); border-radius: 11px; background: #fff; transition: border-color .2s ease, box-shadow .2s ease; }
 .feature-card:hover { border-color: #d3decf; box-shadow: 0 12px 30px rgba(31, 65, 43, .06); }

@@ -22,6 +22,9 @@ class PageViewTests(TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertContains(response, expected_text)
 
+        contact_response = self.client.get(reverse('testing:contact'))
+        self.assertContains(contact_response, 'csrfmiddlewaretoken')
+
     def test_contact_post_is_not_implemented_yet(self):
         response = self.client.post(reverse('testing:contact'), {'name': 'Farmer'})
 
