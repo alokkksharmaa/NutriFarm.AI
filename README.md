@@ -69,5 +69,3 @@ Farmers can register at `/register/`, log in at `/login/`, and view their privat
 5. Back up the existing production database before changes. Keep it at the same configured project path to retain farmer records; do not overwrite it with the development `db.sqlite3`. Settings also load `.env` when running management commands from the project, so apply migrations with `python manage.py migrate --noinput` in the production virtual environment.
 6. Run `python manage.py collectstatic --noinput`. In the PythonAnywhere Web tab, map URL `/static/` to the project's `staticfiles/` directory.
 7. Reload the Web app, then test the homepage and authenticated workflow in a fresh browser session.
-
-The repository's former WSGI configuration included a hard-coded deployment key. It has been removed from the current file, but removing a secret from the latest source does not remove it from Git history or any existing GitHub clones. Rotate that key immediately; historical cleanup requires coordinated repository history rewriting after rotation.
