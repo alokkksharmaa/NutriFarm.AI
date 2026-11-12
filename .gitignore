@@ -7,11 +7,27 @@ env/
 
 # Django
 db.sqlite3
+db.sqlite3-journal
 media/
 staticfiles/
 
 # Environment variables
 .env
+.env.*
+!.env.example
+
+# Test and tooling artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.log
 
 # VS Code
 .vscode/
+
+# Operating system / IDE
+.DS_Store
+Thumbs.db
+.idea/

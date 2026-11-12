@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg site-nav" aria-label="Main navigation">
+  <div class="container">
+    <a class="navbar-brand brand-lockup" href="{% url 'core:home' %}" aria-label="NutriFarm AI home">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>NutriFarm <span class="brand-ai">AI</span></span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNavigation"
+      aria-controls="siteNavigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="siteNavigation">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4">
+        <li class="nav-item"><a class="nav-link" href="{% url 'core:home' %}#features">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'core:home' %}#how-it-works">How it works</a></li>
+        <li class="nav-item mt-3 mt-lg-0"><a class="btn btn-brand btn-sm px-4"
+            href="{% url 'core:home' %}#how-it-works">Get started <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
