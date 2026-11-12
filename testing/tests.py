@@ -158,6 +158,8 @@ class FeedSampleDashboardTests(TestCase):
         self.assertContains(response, 'Welcome, Avery Farmer.')
         self.assertContains(response, 'TOTAL SAMPLES')
         self.assertContains(response, 'TESTED SAMPLES')
+        self.assertContains(response, reverse('testing:sample_create'))
+        self.assertContains(response, reverse('testing:sample_history'))
         self.assertEqual(response.context['total_samples'], 0)
         self.assertEqual(response.context['total_tested'], 0)
         self.assertQuerySetEqual(response.context['recent_samples'], [])
@@ -229,6 +231,7 @@ class FeedSampleDashboardTests(TestCase):
             'sample_name': 'Admin sample',
             'farmer': self.farmer.pk,
             'feed_type': FeedSample.FeedType.SILAGE,
+            'collection_date': timezone.localdate().isoformat(),
             'ph_value': '5.20',
             'moisture': '62.50',
             'temperature': '19.00',
@@ -237,7 +240,11 @@ class FeedSampleDashboardTests(TestCase):
         }
 
         response = self.client.post(reverse('admin:testing_feedsample_add'), sample_data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            response.status_code,
+            302,
+            response.context['adminform'].form.errors if response.context else response.content[:2000],
+        )
         sample = FeedSample.objects.get(sample_name='Admin sample')
 
         sample_data['sample_name'] = 'Updated sample'
@@ -330,6 +337,7 @@ class SampleManagementTests(TestCase):
             ('moisture', '100.01'),
             ('moisture', '-0.01'),
             ('temperature', '80.01'),
+            ('temperature', '-20.01'),
             ('temperature', 'not-a-number'),
             ('collection_date', (timezone.localdate() + timedelta(days=1)).isoformat()),
             ('sample_name', ''),
@@ -346,6 +354,25 @@ class SampleManagementTests(TestCase):
                 self.assertFalse(
                     FeedSample.objects.filter(sample_name='Morning field sample').exists()
                 )
+
+    def test_required_sample_fields_cannot_be_empty(self):
+        required_fields = (
+            'sample_name',
+            'feed_type',
+            'collection_date',
+            'ph_value',
+            'moisture',
+            'temperature',
+            'smell',
+        )
+        response = self.client.post(
+            reverse('testing:sample_create'),
+            self.sample_data(**{field_name: '' for field_name in required_fields}),
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(set(required_fields).issubset(response.context['form'].errors))
+        self.assertFalse(FeedSample.objects.exists())
 
     def test_sample_form_requires_login_and_includes_csrf_token(self):
         self.client.logout()
@@ -400,6 +427,13 @@ class SampleManagementTests(TestCase):
         self.assertEqual(list(response.context['samples']), [own_sample])
         self.assertContains(response, 'My paddock sample')
         self.assertNotContains(response, 'Private other sample')
+
+    def test_history_displays_helpful_empty_state(self):
+        response = self.client.get(reverse('testing:sample_history'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'No samples yet')
+        self.assertContains(response, 'Submit your first sample')
 
     def test_other_farmer_cannot_open_sample_details(self):
         sample = FeedSample.objects.create(

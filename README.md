@@ -52,4 +52,4 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-Farmers can register at `/register/`, log in at `/login/`, and view their private dashboard at `/dashboard/`. Staff can manage sample records and test results at `/admin/`. Sample submission is planned for a later phase; administrators can currently create sample records.
+Farmers can register at `/register/`, log in at `/login/`, and view their private dashboard at `/dashboard/`. Authenticated farmers can submit samples at `/samples/submit/`, review their own history at `/samples/`, and open an owned sample from its detail link. Staff can manage sample records and test results at `/admin/`. Temperature validation uses `SAMPLE_TEMPERATURE_MIN_C` and `SAMPLE_TEMPERATURE_MAX_C` in Django settings.

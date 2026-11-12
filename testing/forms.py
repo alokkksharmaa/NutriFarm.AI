@@ -44,6 +44,7 @@ class FeedSampleForm(forms.ModelForm):
         widget=forms.Textarea(attrs={'rows': 4}),
         help_text='Optional notes about the sample.',
     )
+    mold_present = forms.BooleanField(required=False, label='Visible mold present')
 
     class Meta:
         model = FeedSample

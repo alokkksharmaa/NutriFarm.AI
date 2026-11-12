@@ -9,6 +9,7 @@ class FeedSampleAdmin(admin.ModelAdmin):
         'sample_name',
         'farmer',
         'feed_type',
+        'collection_date',
         'created_at',
         'mold_present',
     )

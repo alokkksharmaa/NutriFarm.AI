@@ -7,7 +7,8 @@
   <div class="container">
     <p class="eyebrow">SAMPLE DETAILS</p>
     <h1 class="content-page-heading">{{ sample.sample_name }}</h1>
-    <p class="content-page-lead">{{ sample.get_feed_type_display }} · Collected {{ sample.collection_date|date:"M j, Y" }} · Submitted {{ sample.created_at|date:"M j, Y" }}.</p>
+    <p class="content-page-lead">{{ sample.get_feed_type_display }} · Collected {{ sample.collection_date|date:"M j, Y"
+      }} · Submitted {{ sample.created_at|date:"M j, Y" }}.</p>
     <div class="row g-3 mt-2">
       <div class="col-sm-6 col-lg-4">
         <div class="feature-card h-100">
@@ -33,9 +34,9 @@
     <div class="feature-card mt-4">
       <h2 class="h5">Additional observations</h2>
       {% if sample.observations %}
-        <p class="mb-0">{{ sample.observations|linebreaksbr }}</p>
+      <p class="mb-0">{{ sample.observations|linebreaksbr }}</p>
       {% else %}
-        <p class="text-secondary mb-0">No additional observations were provided.</p>
+      <p class="text-secondary mb-0">No additional observations were provided.</p>
       {% endif %}
     </div>
     {% if sample.test_result %}
