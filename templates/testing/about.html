@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <p class="eyebrow">ABOUT NUTRIFARM AI</p>
+        <h1 class="content-page-heading">Helping farmers make sense of feed quality.</h1>
+        <p class="content-page-lead">NutriFarm AI is a college project exploring how a simple digital platform can make
+          feed and silage quality information easier for dairy farmers to organize and understand.</p>
+        <p class="text-secondary">The goal is to support informed conversations and everyday decisions with clear sample
+          records, understandable results, and practical guidance. This project is being developed one useful step at a
+          time.</p>
+        <a class="btn btn-brand mt-3" href="{% url 'testing:features' %}">Explore the features <span
+            aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="col-lg-5">
+        <div class="feature-card h-100">
+          <span class="feature-icon icon-green" aria-hidden="true">&#127793;</span>
+          <h2 class="h4">Farmer-first by design</h2>
+          <p>We want useful feed information to be clear and accessible, while keeping the experience straightforward
+            for dairy farmers.</p>
+          <p class="mb-0 text-secondary">NutriFarm AI is currently a project foundation. Sample testing and assessment
+            capabilities are planned for later phases.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

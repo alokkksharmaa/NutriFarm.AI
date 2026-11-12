@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Features | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="section-heading text-center mx-auto">
+      <p class="eyebrow">PLATFORM FEATURES</p>
+      <h1 class="content-page-heading">Useful tools for feed and silage decisions.</h1>
+      <p>NutriFarm AI is planned as a simple place to record samples, understand quality, and keep useful information
+        together.</p>
+    </div>
+    <div class="row g-4 feature-grid">
+      <div class="col-md-6 col-lg-4">
+        <article class="feature-card h-100">
+          <span class="feature-icon icon-green" aria-hidden="true">&#127793;</span>
+          <h2 class="h4">Feed and silage samples</h2>
+          <p>Record the details of samples farmers want to check, including the sample type and date.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <article class="feature-card h-100">
+          <span class="feature-icon icon-lime" aria-hidden="true">&#10003;</span>
+          <h2 class="h4">Quality results</h2>
+          <p>Present sample quality information in a clear format that is easier to review and understand.</p>
+        </article>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <article class="feature-card h-100">
+          <span class="feature-icon icon-sand" aria-hidden="true">&#8635;</span>
+          <h2 class="h4">Testing history</h2>
+          <p>Keep previous sample information together so farmers can refer to it when planning.</p>
+        </article>
+      </div>
+    </div>
+    <p class="text-center text-secondary mt-4 mb-0">These capabilities are planned for future development; they are not
+      active in this phase.</p>
+  </div>
+</section>
+{% endblock %}

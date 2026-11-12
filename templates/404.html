@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Page Not Found | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container text-center">
+    <p class="eyebrow">404 · PAGE NOT FOUND</p>
+    <h1 class="content-page-heading">We couldn’t find that page.</h1>
+    <p class="content-page-lead mx-auto">The address may be incorrect, or the page may have moved.</p>
+    <a class="btn btn-brand mt-3" href="{% url 'core:home' %}">Return to homepage</a>
+  </div>
+</section>
+{% endblock %}

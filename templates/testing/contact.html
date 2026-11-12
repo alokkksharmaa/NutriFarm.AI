@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <p class="eyebrow">CONTACT US</p>
+        <h1 class="content-page-heading">We’d like to hear from you.</h1>
+        <p class="content-page-lead mb-4">This page demonstrates a basic contact form layout. Sending and storing
+          messages is not implemented in this phase.</p>
+        <form method="post" action="{% url 'testing:contact' %}" class="feature-card">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="contact-name" class="form-label">Name</label>
+            <input id="contact-name" name="name" type="text" class="form-control" autocomplete="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="contact-email" class="form-label">Email</label>
+            <input id="contact-email" name="email" type="email" class="form-control" autocomplete="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="contact-message" class="form-label">Message</label>
+            <textarea id="contact-message" name="message" class="form-control" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-brand">Send message</button>
+          <p class="small text-secondary mt-3 mb-0">The submit action currently returns “Not Implemented” and does not
+            save or send this information.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

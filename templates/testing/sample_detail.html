@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Sample {{ sample_id }} | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <p class="eyebrow">DYNAMIC URL PARAMETER DEMO</p>
+    <h1 class="content-page-heading">Sample {{ sample_id }}</h1>
+    <p class="content-page-lead">The sample ID <strong>{{ sample_id }}</strong> was passed to this page as a URL
+      parameter.</p>
+    <p class="text-secondary mb-0">This is a routing demonstration only. Sample records are not stored yet.</p>
+  </div>
+</section>
+{% endblock %}
