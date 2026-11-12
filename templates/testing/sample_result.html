@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Assessment Result | {{ sample.sample_name }} | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-xl-8">
+        <p class="eyebrow">FEED SAMPLE ASSESSMENT</p>
+        <h1 class="content-page-heading">{{ sample.sample_name }}</h1>
+        <p class="content-page-lead">{{ sample.get_feed_type_display }} · Collected {{ sample.collection_date|date:"M j,
+          Y" }}</p>
+
+        {% if result %}
+        <div class="feature-card mb-4">
+          <p class="eyebrow mb-2">PROTOTYPE CATEGORY</p>
+          <h2 class="h3">{{ result.quality_status }}</h2>
+          <p>{{ result.assessment_explanation }}</p>
+          <h3 class="h5 mt-4">Recommendations</h3>
+          <ul class="mb-0">
+            {% for recommendation in result.recommendations.splitlines %}
+            <li>{{ recommendation }}</li>
+            {% endfor %}
+          </ul>
+          {% if result.quality_score != None %}
+          <p class="small text-secondary mt-3 mb-0">Score: {{ result.quality_score }}</p>
+          {% endif %}
+          <p class="small text-secondary mt-3 mb-0">Assessed {{ result.tested_at|date:"M j, Y, P" }}</p>
+        </div>
+        <div class="alert alert-warning" role="note">
+          <strong>Prototype only:</strong> these configurable checks are illustrative, are not scientifically validated,
+          and do not certify feed quality or safety. Do not use this result as a substitute for appropriate laboratory
+          testing or qualified agricultural advice.
+        </div>
+        <form method="post" action="{% url 'testing:evaluate_sample' sample.pk %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-brand">Re-evaluate sample</button>
+        </form>
+        {% else %}
+        <div class="alert alert-info" role="status">This sample has not been assessed yet.</div>
+        <form method="post" action="{% url 'testing:evaluate_sample' sample.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-brand">Evaluate sample</button>
+        </form>
+        {% endif %}
+        <a class="text-link d-inline-block mt-4" href="{% url 'testing:sample_detail' sample.pk %}">&larr; Back to
+          sample details</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

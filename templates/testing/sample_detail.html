@@ -29,8 +29,10 @@
         </div>
       </div>
     </div>
-    <p class="text-secondary mt-4">Smell: {{ sample.smell }} · Mold present: {% if sample.mold_present %}Yes{% else
-      %}No{% endif %}</p>
+    <p class="text-secondary mt-4">
+      Smell: {{ sample.smell }} · Mold present:
+      {% if sample.mold_present %}Yes{% else %}No{% endif %}
+    </p>
     <div class="feature-card mt-4">
       <h2 class="h5">Additional observations</h2>
       {% if sample.observations %}
@@ -42,12 +44,22 @@
     {% if sample.test_result %}
     <div class="feature-card mt-4">
       <p class="eyebrow mb-2">QUALITY RESULT</p>
-      <h2 class="h4">{{ sample.test_result.quality_status }} · {{ sample.test_result.quality_score }}/100</h2>
+      <h2 class="h4">{{ sample.test_result.quality_status }}</h2>
+      <p>{{ sample.test_result.assessment_explanation }}</p>
+      <h3 class="h6">Recommendations</h3>
       <p class="mb-0">{{ sample.test_result.recommendations|linebreaksbr }}</p>
+      <a class="text-link d-inline-block mt-3" href="{% url 'testing:sample_result' sample.pk %}">View full
+        assessment</a>
     </div>
     {% else %}
-    <p class="text-secondary mt-4">This sample has not been assessed yet.</p>
+    <div class="alert alert-light border mt-4" role="status">This sample has not been assessed yet. The assessment uses
+      illustrative prototype checks and is not a feed-safety certification.</div>
     {% endif %}
+    <form method="post" action="{% url 'testing:evaluate_sample' sample.pk %}" class="mt-3">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-brand">{% if sample.test_result %}Re-evaluate sample{% else %}Evaluate
+        sample{% endif %}</button>
+    </form>
     <a class="text-link d-inline-block mt-4" href="{% url 'testing:dashboard' %}">&larr; Back to dashboard</a>
   </div>
 </section>

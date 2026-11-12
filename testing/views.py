@@ -3,8 +3,10 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
+from .assessment import assess_sample
 from .forms import FarmerLoginForm, FarmerRegistrationForm, FeedSampleForm
 from .models import FeedSample, TestResult
 
@@ -41,8 +43,47 @@ def contact(request: HttpRequest) -> HttpResponse:
 def sample_detail(request: HttpRequest, sample_id: int) -> HttpResponse:
     """Show a sample only to its owner."""
 
-    sample = get_object_or_404(FeedSample, pk=sample_id, farmer=request.user)
+    sample = get_object_or_404(
+        FeedSample.objects.select_related('test_result'),
+        pk=sample_id,
+        farmer=request.user,
+    )
     return render(request, 'testing/sample_detail.html', {'sample': sample})
+
+
+@login_required
+@require_POST
+def evaluate_sample(request: HttpRequest, sample_id: int) -> HttpResponse:
+    """Evaluate one owned sample and create or update its single result."""
+
+    sample = get_object_or_404(FeedSample, pk=sample_id, farmer=request.user)
+    assessment = assess_sample(sample)
+    TestResult.objects.update_or_create(
+        sample=sample,
+        defaults={**assessment, 'tested_at': timezone.now()},
+    )
+    messages.success(request, 'The sample assessment has been saved.')
+    return redirect('testing:sample_result', sample_id=sample.pk)
+
+
+@login_required
+def sample_result(request: HttpRequest, sample_id: int) -> HttpResponse:
+    """Display an assessment only for a sample owned by the current farmer."""
+
+    sample = get_object_or_404(
+        FeedSample.objects.select_related('test_result'),
+        pk=sample_id,
+        farmer=request.user,
+    )
+    try:
+        result = sample.test_result
+    except TestResult.DoesNotExist:
+        result = None
+    return render(
+        request,
+        'testing/sample_result.html',
+        {'sample': sample, 'result': result},
+    )
 
 
 @login_required

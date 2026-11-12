@@ -62,9 +62,12 @@ class TestResult(models.Model):
         related_name='test_result',
     )
     quality_score = models.IntegerField(
+        null=True,
+        blank=True,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     quality_status = models.CharField(max_length=30)
+    assessment_explanation = models.TextField(blank=True)
     recommendations = models.TextField()
     tested_at = models.DateTimeField(auto_now_add=True)
 
