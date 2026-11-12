@@ -14,8 +14,23 @@
         <li class="nav-item"><a class="nav-link" href="{% url 'testing:features' %}">Features</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'core:home' %}#how-it-works">How it works</a></li>
         <li class="nav-item"><a class="nav-link" href="{% url 'testing:contact' %}">Contact</a></li>
-        <li class="nav-item mt-3 mt-lg-0"><a class="btn btn-brand btn-sm px-4"
-            href="{% url 'core:home' %}#how-it-works">Get started <span aria-hidden="true">&rarr;</span></a></li>
+        {% if request.user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'testing:dashboard' %}">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'testing:sample_create' %}">Submit Sample</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'testing:sample_history' %}">My Samples</a></li>
+        <li class="nav-item">
+          <form method="post" action="{% url 'testing:logout' %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link nav-link border-0">Log out</button>
+          </form>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'testing:login' %}">Log in</a></li>
+        <li class="nav-item mt-3 mt-lg-0">
+          <a class="btn btn-brand btn-sm px-4" href="{% url 'testing:register' %}">Get started <span
+              aria-hidden="true">&rarr;</span></a>
+        </li>
+        {% endif %}
       </ul>
     </div>
   </div>

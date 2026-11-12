@@ -1,25 +1,36 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#174a35">
-    <meta name="description" content="NutriFarm AI helps dairy farmers make more informed decisions about feed and silage quality.">
-    <title>{% block title %}NutriFarm AI | Better feed decisions start here{% endblock %}</title>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'css/site.css' %}" rel="stylesheet">
-    {% block extra_head %}{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#174a35">
+  <meta name="description"
+    content="NutriFarm AI helps dairy farmers make more informed decisions about feed and silage quality.">
+  <title>{% block title %}NutriFarm AI | Better feed decisions start here{% endblock %}</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="{% static 'css/site.css' %}" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
 </head>
+
 <body>
-    {% include 'partials/navbar.html' %}
-    <main id="main-content">
-        {% block content %}{% endblock %}
-    </main>
-    {% include 'partials/footer.html' %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-    <script src="{% static 'js/site.js' %}" defer></script>
-    {% block extra_js %}{% endblock %}
+  {% include 'partials/navbar.html' %}
+  <main id="main-content">
+    {% if messages %}
+    <div class="container pt-3">
+      {% for message in messages %}
+      <div class="alert alert-success" role="status">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  {% include 'partials/footer.html' %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="{% static 'js/site.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
 </body>
+
 </html>

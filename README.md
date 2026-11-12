@@ -2,9 +2,10 @@
 
 Smart AI-Enabled Rapid Feed and Silage Quality Testing System for Dairy Farmers.
 
-NutriFarm AI is a Django foundation for a farmer-focused platform to manage feed
-and silage sample testing. This first milestone includes a responsive public
-homepage only; accounts, submissions, assessments, and reports are future work.
+NutriFarm AI is a farmer-focused Django platform for feed and silage sample
+records. The current foundation includes a responsive public site, farmer
+accounts, a private database-backed dashboard, and admin-managed sample data.
+Farmer sample submission and quality assessment are planned for later work.
 
 ## Requirements
 
@@ -36,6 +37,19 @@ connection is required for its CDN assets.
 
 - `nutrifarm/` — project settings and root URL/ASGI/WSGI configuration.
 - `core/` — public homepage app and its URL/view.
+- `testing/` — account views, feed sample and result models, admin, and tests.
 - `templates/` — shared base layout and reusable navigation/footer partials.
 - `static/` — project CSS and JavaScript.
-Smart Al-Enabled Rapid Feed and Silage Quality Testing System for Dairy Farmers
+
+## Database and farmer accounts
+
+The project uses the built-in SQLite database and Django's User model. After updating the models, create and apply migrations:
+
+```powershell
+python manage.py makemigrations testing
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+Farmers can register at `/register/`, log in at `/login/`, and view their private dashboard at `/dashboard/`. Staff can manage sample records and test results at `/admin/`. Sample submission is planned for a later phase; administrators can currently create sample records.

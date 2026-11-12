@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}My Samples | NutriFarm AI{% endblock %}
+
+{% block content %}
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+      <div>
+        <p class="eyebrow mb-2">YOUR SAMPLE RECORDS</p>
+        <h1 class="content-page-heading mb-2">My samples</h1>
+        <p class="text-secondary mb-0">Collection details and testing history for your account.</p>
+      </div>
+      <a class="btn btn-brand" href="{% url 'testing:sample_create' %}">Submit a sample <span
+          aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    {% if samples %}
+    <div class="table-responsive">
+      <table class="table align-middle bg-white sample-table">
+        <thead>
+          <tr>
+            <th scope="col">Sample</th>
+            <th scope="col">Feed type</th>
+            <th scope="col">Collected</th>
+            <th scope="col">Submitted</th>
+            <th scope="col">pH</th>
+            <th scope="col">Moisture</th>
+            <th scope="col"><span class="visually-hidden">Details</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sample in samples %}
+          <tr>
+            <td class="fw-semibold">{{ sample.sample_name }}</td>
+            <td>{{ sample.get_feed_type_display }}</td>
+            <td>{{ sample.collection_date|date:"M j, Y" }}</td>
+            <td>{{ sample.created_at|date:"M j, Y" }}</td>
+            <td>{{ sample.ph_value }}</td>
+            <td>{{ sample.moisture }}%</td>
+            <td><a class="text-link" href="{% url 'testing:sample_detail' sample.pk %}">View details</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="feature-card text-center py-5">
+      <span class="feature-icon icon-green mx-auto" aria-hidden="true">&#127793;</span>
+      <h2 class="h4">No samples yet</h2>
+      <p class="text-secondary">Your submitted samples will appear here.</p>
+      <a class="btn btn-brand mt-2" href="{% url 'testing:sample_create' %}">Submit your first sample</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

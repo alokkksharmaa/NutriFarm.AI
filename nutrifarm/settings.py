@@ -125,3 +125,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Named destinations used by Django's built-in session authentication.
+LOGIN_URL = 'testing:login'
+LOGIN_REDIRECT_URL = 'testing:dashboard'
+LOGOUT_REDIRECT_URL = 'core:home'
+
+# Accepted sample-temperature range in degrees Celsius; can be adjusted per deployment.
+SAMPLE_TEMPERATURE_MIN_C = -20
+SAMPLE_TEMPERATURE_MAX_C = 80

@@ -1,5 +1,12 @@
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseNotAllowed
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest, HttpResponse, HttpResponseNotAllowed
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
+from .forms import FarmerLoginForm, FarmerRegistrationForm, FeedSampleForm
+from .models import FeedSample, TestResult
 
 
 def about(request: HttpRequest) -> HttpResponse:
@@ -30,16 +37,93 @@ def contact(request: HttpRequest) -> HttpResponse:
     return render(request, 'testing/contact.html')
 
 
+@login_required
 def sample_detail(request: HttpRequest, sample_id: int) -> HttpResponse:
-    """Display a positive sample ID supplied by the URL."""
+    """Show a sample only to its owner."""
 
-    if sample_id < 1:
-        raise Http404('Sample IDs must be positive integers.')
+    sample = get_object_or_404(FeedSample, pk=sample_id, farmer=request.user)
+    return render(request, 'testing/sample_detail.html', {'sample': sample})
 
-    return render(request, 'testing/sample_detail.html', {'sample_id': sample_id})
+
+@login_required
+def sample_create(request: HttpRequest) -> HttpResponse:
+    """Validate and save a sample owned by the logged-in farmer."""
+
+    form = FeedSampleForm(request.POST if request.method == 'POST' else None)
+    if request.method == 'POST' and form.is_valid():
+        sample = form.save(commit=False)
+        sample.farmer = request.user
+        sample.save()
+        messages.success(request, 'Your sample was saved successfully.')
+        return redirect('testing:sample_detail', sample_id=sample.pk)
+
+    return render(request, 'testing/sample_form.html', {'form': form})
+
+
+@login_required
+def sample_history(request: HttpRequest) -> HttpResponse:
+    """List only the samples submitted by the logged-in farmer."""
+
+    samples = FeedSample.objects.filter(farmer=request.user).select_related('test_result')
+    return render(request, 'testing/sample_history.html', {'samples': samples})
 
 
 def page_not_found(request: HttpRequest, exception: Exception) -> HttpResponse:
     """Render the project's friendly 404 page when DEBUG is disabled."""
 
     return render(request, '404.html', status=404)
+
+
+def register(request: HttpRequest) -> HttpResponse:
+    """Validate and create a farmer account using Django's User model."""
+
+    if request.user.is_authenticated:
+        return redirect('testing:dashboard')
+
+    form = FarmerRegistrationForm(request.POST if request.method == 'POST' else None)
+    if request.method == 'POST' and form.is_valid():
+        user = form.save()
+        login(request, user)
+        messages.success(request, 'Your farmer account has been created.')
+        return redirect('testing:dashboard')
+
+    return render(request, 'testing/register.html', {'form': form})
+
+
+def farmer_login(request: HttpRequest) -> HttpResponse:
+    """Authenticate a farmer and establish a Django session."""
+
+    if request.user.is_authenticated:
+        return redirect('testing:dashboard')
+
+    form = FarmerLoginForm(
+        request,
+        data=request.POST if request.method == 'POST' else None,
+    )
+    if request.method == 'POST' and form.is_valid():
+        login(request, form.get_user())
+        return redirect('testing:dashboard')
+
+    return render(request, 'testing/login.html', {'form': form})
+
+
+@require_POST
+def farmer_logout(request: HttpRequest) -> HttpResponse:
+    """End the current authentication session."""
+
+    logout(request)
+    return redirect('core:home')
+
+
+@login_required
+def dashboard(request: HttpRequest) -> HttpResponse:
+    """Show counts and recent samples belonging to the signed-in farmer."""
+
+    samples = FeedSample.objects.filter(farmer=request.user).select_related('test_result')
+    context = {
+        'farmer_name': request.user.get_full_name() or request.user.username,
+        'total_samples': samples.count(),
+        'total_tested': TestResult.objects.filter(sample__farmer=request.user).count(),
+        'recent_samples': samples[:5],
+    }
+    return render(request, 'testing/dashboard.html', context)

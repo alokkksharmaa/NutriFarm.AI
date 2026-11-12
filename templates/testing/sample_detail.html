@@ -1,15 +1,53 @@
 {% extends 'base.html' %}
 
-{% block title %}Sample {{ sample_id }} | NutriFarm AI{% endblock %}
+{% block title %}{{ sample.sample_name }} | NutriFarm AI{% endblock %}
 
 {% block content %}
 <section class="section-pad">
   <div class="container">
-    <p class="eyebrow">DYNAMIC URL PARAMETER DEMO</p>
-    <h1 class="content-page-heading">Sample {{ sample_id }}</h1>
-    <p class="content-page-lead">The sample ID <strong>{{ sample_id }}</strong> was passed to this page as a URL
-      parameter.</p>
-    <p class="text-secondary mb-0">This is a routing demonstration only. Sample records are not stored yet.</p>
+    <p class="eyebrow">SAMPLE DETAILS</p>
+    <h1 class="content-page-heading">{{ sample.sample_name }}</h1>
+    <p class="content-page-lead">{{ sample.get_feed_type_display }} · Collected {{ sample.collection_date|date:"M j, Y" }} · Submitted {{ sample.created_at|date:"M j, Y" }}.</p>
+    <div class="row g-3 mt-2">
+      <div class="col-sm-6 col-lg-4">
+        <div class="feature-card h-100">
+          <p class="eyebrow mb-2">pH VALUE</p>
+          <p class="h3 mb-0">{{ sample.ph_value }}</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="feature-card h-100">
+          <p class="eyebrow mb-2">MOISTURE</p>
+          <p class="h3 mb-0">{{ sample.moisture }}%</p>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="feature-card h-100">
+          <p class="eyebrow mb-2">TEMPERATURE</p>
+          <p class="h3 mb-0">{{ sample.temperature }}&deg;</p>
+        </div>
+      </div>
+    </div>
+    <p class="text-secondary mt-4">Smell: {{ sample.smell }} · Mold present: {% if sample.mold_present %}Yes{% else
+      %}No{% endif %}</p>
+    <div class="feature-card mt-4">
+      <h2 class="h5">Additional observations</h2>
+      {% if sample.observations %}
+        <p class="mb-0">{{ sample.observations|linebreaksbr }}</p>
+      {% else %}
+        <p class="text-secondary mb-0">No additional observations were provided.</p>
+      {% endif %}
+    </div>
+    {% if sample.test_result %}
+    <div class="feature-card mt-4">
+      <p class="eyebrow mb-2">QUALITY RESULT</p>
+      <h2 class="h4">{{ sample.test_result.quality_status }} · {{ sample.test_result.quality_score }}/100</h2>
+      <p class="mb-0">{{ sample.test_result.recommendations|linebreaksbr }}</p>
+    </div>
+    {% else %}
+    <p class="text-secondary mt-4">This sample has not been assessed yet.</p>
+    {% endif %}
+    <a class="text-link d-inline-block mt-4" href="{% url 'testing:dashboard' %}">&larr; Back to dashboard</a>
   </div>
 </section>
 {% endblock %}
