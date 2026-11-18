@@ -28,8 +28,26 @@ a { color: inherit; }
 .btn-outline-brand { border: 1px solid #cbd6c9; border-radius: 7px; color: var(--forest); font-weight: 650; }
 .btn-outline-brand:hover { border-color: var(--forest); background: #edf2e9; color: var(--forest-deep); }
 
-.hero-section { position: relative; overflow: hidden; background: var(--cream); }
-.hero-container { padding-top: clamp(4.5rem, 8vw, 7.1rem); padding-bottom: clamp(4.5rem, 8vw, 7rem); }
+.hero-section { position: relative; overflow: hidden; background: var(--cream); isolation: isolate; }
+.hero-section::before {
+    content: "";
+    position: absolute;
+    z-index: -2;
+    inset: -10px;
+    background: url("../images/morning-pasture-final.jpg") center 58% / cover no-repeat;
+    filter: blur(2px) saturate(.78) brightness(1.08);
+    transform: scale(1.02);
+}
+.hero-section::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background:
+        linear-gradient(108deg, rgba(253, 252, 244, .99) 0%, rgba(249, 250, 241, .97) 34%, rgba(245, 248, 235, .82) 54%, rgba(242, 247, 231, .35) 78%, rgba(238, 244, 225, .20) 100%),
+        linear-gradient(180deg, rgba(250, 250, 242, .88) 0%, rgba(247, 249, 239, .34) 48%, rgba(20, 63, 39, .08) 100%);
+}
+.hero-container { position: relative; padding-top: clamp(4.5rem, 8vw, 7.1rem); padding-bottom: clamp(4.5rem, 8vw, 7rem); }
 .eyebrow { margin-bottom: 1.15rem; color: var(--leaf); font-size: .72rem; font-weight: 760; letter-spacing: .14em; line-height: 1.4; }
 .eyebrow-dot { display: inline-block; width: 8px; height: 8px; margin-right: .4rem; border-radius: 50%; background: var(--leaf); }
 .hero-section h1 { max-width: 720px; margin: 0 0 1.35rem; color: var(--forest-deep); font-size: clamp(2.6rem, 5vw, 4.45rem); font-weight: 720; letter-spacing: -.065em; line-height: 1.08; }
