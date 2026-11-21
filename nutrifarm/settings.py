@@ -23,7 +23,7 @@ if not SECRET_KEY:
 
 allowed_hosts_raw = os.environ.get(
     'ALLOWED_HOSTS',
-    os.environ.get('DJANGO_ALLOWED_HOSTS', 'alokkumar23.pythonanywhere.com' if DEBUG else ''),
+    os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1' if DEBUG else ''),
 )
 
 ALLOWED_HOSTS = [
@@ -34,7 +34,11 @@ ALLOWED_HOSTS = [
 if not DEBUG and not ALLOWED_HOSTS:
     raise ImproperlyConfigured('Set ALLOWED_HOSTS for production.')
 
-CSRF_TRUSTED_ORIGINS = 'alokkumar23.pythonanywhere.com';
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
+    if origin.strip()
+]
 
 # Production security settings
 if not DEBUG:
