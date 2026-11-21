@@ -1,5 +1,3 @@
-"""Django settings for NutriFarm AI."""
-
 import os
 from pathlib import Path
 
