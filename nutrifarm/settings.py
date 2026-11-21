@@ -16,7 +16,7 @@ def env_bool(name: str, default: bool = False) -> bool:
     return value.strip().lower() in {'true', '1', 'yes', 'on'}
 
 
-DEBUG = env_bool('DEBUG', env_bool('DJANGO_DEBUG', True))
+DEBUG = env_bool('DEBUG', env_bool('DJANGO_DEBUG', False))
 SECRET_KEY = os.environ.get('SECRET_KEY') or os.environ.get('DJANGO_SECRET_KEY')
 if not SECRET_KEY:
     if not DEBUG:
@@ -25,7 +25,7 @@ if not SECRET_KEY:
 
 allowed_hosts_raw = os.environ.get(
     'ALLOWED_HOSTS',
-    os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1' if DEBUG else ''),
+    os.environ.get('DJANGO_ALLOWED_HOSTS', 'alokkumar23.pythonanywhere.com' if DEBUG else ''),
 )
 
 ALLOWED_HOSTS = [
@@ -36,11 +36,7 @@ ALLOWED_HOSTS = [
 if not DEBUG and not ALLOWED_HOSTS:
     raise ImproperlyConfigured('Set ALLOWED_HOSTS for production.')
 
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',')
-    if origin.strip()
-]
+CSRF_TRUSTED_ORIGINS = 'alokkumar23.pythonanywhere.com';
 
 # Production security settings
 if not DEBUG:
@@ -96,10 +92,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'nutrifarm.wsgi.application'
 ASGI_APPLICATION = 'nutrifarm.asgi.application'
 
+# settings.py
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('DATABASE_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 
